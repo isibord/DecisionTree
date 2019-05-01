@@ -23,27 +23,24 @@ print("### Decision Tree model")
 
 numFolds = 5
 
-minToSplitToTry = [5, 10, 20, 50, 100, 150, 175, 200, 300, 400, 500, 750, 1000]
+avgAccr = 0
+for i in range(numFolds):
+    (foldTrainX, foldTrainY)  = Assignment1Support.GetAllDataExceptFold(xTrain, yTrain, i, numFolds)
+    (foldValidationX, foldValidationY) = Assignment1Support.GetDataInFold(xTrain, yTrain, i, numFolds)
 
-for minSplit in minToSplitToTry:
-    avgAccr = 0
-    for i in range(numFolds):
-        (foldTrainX, foldTrainY)  = Assignment1Support.GetAllDataExceptFold(xTrain, yTrain, i, numFolds)
-        (foldValidationX, foldValidationY) = Assignment1Support.GetDataInFold(xTrain, yTrain, i, numFolds)
-
-        # do feature engineering/selection on foldTrainX, foldTrainY
+    # do feature engineering/selection on foldTrainX, foldTrainY
     
-        xTrain_np = np.asarray(foldTrainX)
-        yTrain_np = np.asarray(foldTrainY)
-        xTest_np = np.asarray(foldValidationX)
-        yTest_np = np.asarray(foldValidationY)
+    xTrain_np = np.asarray(foldTrainX)
+    yTrain_np = np.asarray(foldTrainY)
+    xTest_np = np.asarray(foldValidationX)
+    yTest_np = np.asarray(foldValidationY)
 
-        model.fit(xTrain_np, yTrain_np, minSplit)
+    model.fit(xTrain_np, yTrain_np, minSplit)
 
-        yTestPredicted = model.predict(xTest_np)
+    yTestPredicted = model.predict(xTest_np)
 
-        avgAccr += EvaluationsStub.Accuracy(yTest_np, yTestPredicted)
+    avgAccr += EvaluationsStub.Accuracy(yTest_np, yTestPredicted)
          
-    print("%d, %f" % (minSplit, avgAccr / 5.0))
+ 
 
         #EvaluationsStub.ExecuteAll(yTest_np, yTestPredicted)

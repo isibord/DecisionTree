@@ -4,6 +4,7 @@ import math
 def FeaturizeBagOfWords(xTrainRaw):
     wordFreq = {}
     for x in xTrainRaw:
+        x = x.lower()
         for word in x.split():
             if word in wordFreq:
                 wordFreq[word] += 1
@@ -24,7 +25,8 @@ def MutualInformation(xTrainRaw, yTrainRaw):
     for i in range(lenSamples):
         for word in distinctWords:
             probs = []
-            if word in xTrainRaw[i].split():
+            currSentence = xTrainRaw[i].lower()
+            if word in currSentence.split():
                 if yTrainRaw[i] == 0:
                     wordWithCounts[word][0] += 1
                 else:

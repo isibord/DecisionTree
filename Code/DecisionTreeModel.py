@@ -18,20 +18,21 @@ class DecisionTreeModel(object):
 
 
     def __init__(self):
+        self.threshold = 0.5
         pass
         
-    def fit(self, x, y, minToSplit=100, threshold = 0.5):
+    def fit(self, x, y, minToSplit=100, threshold= 0.5):
         self.threshold = threshold
         self.featuresLeft = list(range(len(x[0])))
-        self.minToSplit = minToSplit
-        self.Tree = self.growTree(x, y)
+        self.Tree = self.growTree(x, y, minToSplit, featuresToUse)
 
-    def growTree(self, x, y):        
+    def growTree(self, x, y, minToSplit, featuresToUse):    
+        self.featuresLeft = featuresToUse
         if all(yi == 0 for yi in y):
             return TreeNode(True, 0, None, None, len(y), 0, None)
         elif all(yi == 1 for yi in y):
             return TreeNode(True, 1, None, None, 0, len(y), None)
-        elif len(y) < self.minToSplit:
+        elif len(y) < minToSplit:
             (mostcommon, count0, count1) = self.countMostCommon0and1(y)
             return TreeNode(True, mostcommon, None, None, count0, count1, None)  # Majority class
         else:
@@ -48,7 +49,7 @@ class DecisionTreeModel(object):
             (leftSplitx, leftSplity) = datasplit[0]
             (rightSplitx, rightSplity) = datasplit[1]
 
-            return TreeNode(False, bestAttr, self.growTree(leftSplitx, leftSplity), self.growTree(rightSplitx, rightSplity), None, None, midVal)
+            return TreeNode(False, bestAttr, self.growTree(leftSplitx, leftSplity, minToSplit, featuresToUse), self.growTree(rightSplitx, rightSplity, minToSplit, featuresToUse), None, None, midVal)
 
 
     def predict(self, x):

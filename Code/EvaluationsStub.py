@@ -55,7 +55,7 @@ def PredictionDiff(xTestRaw, y, yPredicted):
 
     predictionRange = {}
     for i in range(len(y)):
-        predictionRange[xTestRaw[i]] = y[i] - yPredicted[i]
+        predictionRange[xTestRaw[i]] = yPredicted[i] - y[i]
 
     return predictionRange
 
